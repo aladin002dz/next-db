@@ -34,3 +34,23 @@ export async function getPosts() {
     return { error: 'Failed to fetch posts', posts: [] };
   }
 }
+
+export async function deletePost(formData: FormData) {
+  try {
+    const postId = formData.get('postId') as string;
+
+    if (!postId) {
+      return { error: 'Post ID is required' };
+    }
+
+    const db = getDb();
+    const deletePost = db.prepare('DELETE FROM posts WHERE id = ?');
+    deletePost.run(postId);
+    
+    revalidatePath('/');
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return { error: 'Failed to delete post' };
+  }
+}

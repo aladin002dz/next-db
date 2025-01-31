@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "data": "node ./data/data.js"
+    "init-data": "node ./data/data.js"
   },
   "dependencies": {
     "better-sqlite3": "^11.8.1",

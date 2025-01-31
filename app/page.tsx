@@ -1,4 +1,5 @@
 import PostForm from './components/PostForm';
+import DeleteButton from './components/DeleteButton';
 import { getPosts } from './actions/posts';
 
 // Add cache configuration
@@ -29,7 +30,10 @@ export default async function Home() {
           <div className="grid gap-4 w-full">
             {posts.map((post: Post) => (
               <div key={post.id} className="p-4 border rounded-lg shadow-sm">
-                <h2 className="text-xl font-semibold">{post.title}</h2>
+                <div className="flex justify-between items-start">
+                  <h2 className="text-xl font-semibold">{post.title}</h2>
+                  <DeleteButton postId={post.id} />
+                </div>
                 <p className="mt-2 text-gray-600">{post.content}</p>
               </div>
             ))}
