@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { createPost } from '../actions/posts';
+//import { createPost } from '../actions/posts';
+import { createPost } from '../actions/prismaPosts';
 import { useFormStatus } from 'react-dom';
 
 function SubmitButton() {
@@ -22,9 +23,16 @@ export default function PostForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   async function handleAction(formData: FormData) {
-    const result = await createPost(formData);
-    if (result.success) {
-      formRef.current?.reset();
+    const title = formData.get("title");
+    const content = formData.get("content");
+
+    if (!title || !content) {
+      return;
+    }
+    const result = await createPost(title.toString(), content.toString());
+
+    if (formRef.current) {
+      formRef.current.reset();
     }
   }
 

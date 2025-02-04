@@ -1,6 +1,7 @@
 import PostForm from './components/PostForm';
 import DeleteButton from './components/DeleteButton';
-import { getPosts } from './actions/posts';
+//import { getPosts } from './actions/posts';
+import { getPosts } from './actions/prismaPosts';
 
 // Add cache configuration
 export const dynamic = 'force-dynamic';
@@ -13,7 +14,15 @@ interface Post {
 }
 
 export default async function Home() {
-  const { posts = [], error } = await getPosts();
+  //const { posts = [], error } = await getPosts();
+
+  let fetchError = null;
+  let posts: Post[] = [];
+  try {
+    posts = await getPosts();
+  } catch (error) {
+    fetchError = error;
+  }
   
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -22,8 +31,10 @@ export default async function Home() {
         <PostForm />
         
         <h2 className="text-2xl font-bold mt-8">Posts</h2>
-        {error ? (
-          <p className="text-red-500">Error loading posts: {error}</p>
+        {fetchError ? (
+          <p className="text-red-500">
+            Error loading posts: {JSON.stringify(fetchError)}
+          </p>
         ) : posts.length === 0 ? (
           <p className="text-gray-500">No posts yet. Create your first post!</p>
         ) : (

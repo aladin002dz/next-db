@@ -1,7 +1,8 @@
 'use client';
 
 import { useTransition } from 'react';
-import { deletePost } from '../actions/posts';
+//import { deletePost } from '../actions/posts';
+import { deletePost } from '../actions/prismaPosts';
 
 export default function DeleteButton({ postId }: { postId: number }) {
   const [isPending, startTransition] = useTransition();

@@ -1,18 +1,15 @@
-import Database from 'better-sqlite3';
+import { PrismaClient } from '@prisma/client'
 
-let db: Database.Database | null = null;
-
-export function getDb() {
-  if (!db) {
-    db = new Database('./data/database.db');
-  }
-  return db;
+const prismaClientSingleton = () => {
+  return new PrismaClient()
 }
 
-// Clean up the connection when the app is shutting down
-process.on('SIGTERM', () => {
-  if (db) {
-    db.close();
-    db = null;
-  }
-});
+declare global {
+  const prisma: undefined | ReturnType<typeof prismaClientSingleton>
+}
+
+const prisma = globalThis.prisma ?? prismaClientSingleton()
+
+if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma
+
+export { prisma }
