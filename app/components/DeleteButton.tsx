@@ -8,11 +8,8 @@ export default function DeleteButton({ postId }: { postId: number }) {
 
   const handleDelete = () => {
     if (confirm('Are you sure you want to delete this post?')) {
-      const formData = new FormData();
-      formData.append('postId', postId.toString());
-      
       startTransition(() => {
-        deletePost(formData);
+        deletePost(postId);
       });
     }
   };
