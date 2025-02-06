@@ -1,6 +1,6 @@
 import PostForm from './components/PostForm';
 import DeleteButton from './components/DeleteButton';
-import { getPosts } from './actions/posts';
+import { getPosts } from './actions/drizzlePosts';
 
 // Add cache configuration
 export const dynamic = 'force-dynamic';

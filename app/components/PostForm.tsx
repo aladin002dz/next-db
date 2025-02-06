@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { createPost } from '../actions/posts';
+import { createPost } from '../actions/drizzlePosts';
 import { useFormStatus } from 'react-dom';
 
 function SubmitButton() {
