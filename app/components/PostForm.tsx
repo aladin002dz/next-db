@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { createPost } from '../actions/posts';
+import { createPgPost } from '../actions/pgPosts';
 import { useFormStatus } from 'react-dom';
 
 function SubmitButton() {
@@ -22,7 +22,7 @@ export default function PostForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   async function handleAction(formData: FormData) {
-    const result = await createPost(formData);
+    const result = await createPgPost(formData);
     if (result.success) {
       formRef.current?.reset();
     }

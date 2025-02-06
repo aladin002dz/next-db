@@ -1,15 +1,18 @@
 'use client';
 
 import { useTransition } from 'react';
-import { deletePost } from '../actions/posts';
+import { deletePgPost } from '../actions/pgPosts';
 
 export default function DeleteButton({ postId }: { postId: number }) {
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
     if (confirm('Are you sure you want to delete this post?')) {
-      startTransition(() => {
-        deletePost(postId);
+      startTransition(async () => {
+        const result = await deletePgPost(postId);
+        if (result.error) {
+          alert(result.error);
+        }
       });
     }
   };

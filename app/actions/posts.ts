@@ -1,6 +1,6 @@
 'use server';
 
-import { getDb } from '@/lib/db';
+import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 
 export async function createPost(formData: FormData) {
@@ -12,9 +12,10 @@ export async function createPost(formData: FormData) {
       return { error: 'Title and content are required' };
     }
 
-    const db = getDb();
-    const insertPost = db.prepare('INSERT INTO posts (title, content) VALUES (?, ?)');
-    insertPost.run(title, content);
+    await sql`
+      INSERT INTO posts (title, content)
+      VALUES (${title}, ${content})
+    `;
     
     revalidatePath('/');
     return { success: true };
@@ -26,9 +27,11 @@ export async function createPost(formData: FormData) {
 
 export async function getPosts() {
   try {
-    const db = getDb();
-    const posts = db.prepare('SELECT * FROM posts ORDER BY id DESC').all();
-    return { posts };
+    const { rows } = await sql`
+      SELECT * FROM posts 
+      ORDER BY id DESC
+    `;
+    return { posts: rows };
   } catch (error) {
     console.error('Error fetching posts:', error);
     return { error: 'Failed to fetch posts', posts: [] };
@@ -41,9 +44,10 @@ export async function deletePost(postId: number) {
       return { error: 'Post ID is required' };
     }
 
-    const db = getDb();
-    const deletePost = db.prepare('DELETE FROM posts WHERE id = ?');
-    deletePost.run(postId);
+    await sql`
+      DELETE FROM posts 
+      WHERE id = ${postId}
+    `;
     
     revalidatePath('/');
     return { success: true };

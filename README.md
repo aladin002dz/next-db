@@ -1,63 +1,113 @@
-# Next.js Database Demo Project
+# Next.js with Vercel Postgres
 
-This is a demonstration project showcasing different approaches to database integration with Next.js. The project implements a simple blog-post system where users can create, read, and delete posts.
+This project demonstrates how to build a Next.js application with Vercel Postgres for database management.
 
-## Project Structure
+## Prerequisites
+- Node.js installed on your system
+- Basic understanding of Next.js and SQL
+- Vercel account (for Postgres)
 
-- Built with Next.js 14 App Router
-- Uses Server Actions for data mutations
-- Implements optimistic updates for better UX
-- Features a clean, modern UI
+## Setup Instructions
 
-## Available Branches
-
-### Main Branch (Current)
-The main branch implements a basic SQLite integration using `better-sqlite3`. It demonstrates:
-- Direct SQLite database operations
-- Server-side data handling
-- Basic CRUD operations
-
-### [Prisma Branch](https://github.com/aladin002dz/next-db/tree/prisma)
-The Prisma branch showcases a more sophisticated approach using Prisma ORM. It includes:
-- Prisma ORM integration with SQLite
-- Type-safe database operations
-- Automatic migrations
-- Database schema management
-- Improved developer experience with Prisma Studio
-
-To explore the Prisma implementation, check out the [prisma branch](https://github.com/aladin002dz/next-db/tree/prisma) which contains:
-- Complete Prisma setup and configuration
-- Database migrations
-- Type-safe database queries
-- Detailed documentation on setup and usage
-
-### [Drizzle Branch](https://github.com/aladin002dz/next-db/tree/drizzle)
-The Drizzle branch demonstrates integration with Drizzle ORM. It features:
-- Drizzle ORM setup with SQLite
-- Type-safe schema definitions
-- Efficient database operations
-- Lightweight and flexible approach
-
-To explore the Drizzle implementation, check out the [drizzle branch](https://github.com/aladin002dz/next-db/tree/drizzle) which includes:
-- Complete Drizzle ORM configuration
-- Schema definitions using TypeScript
-- Type-safe query building
-- Simple and performant database operations
-
-## Getting Started
-
-1. Clone the repository
-2. Install dependencies:
+### 1. Clone and Install Dependencies
 ```bash
+git clone <repository-url>
+cd next-db
 npm install
 ```
-3. Initialize the database:
+
+### 2. Install Vercel Postgres
 ```bash
-npm run init-data
-```
-4. Start the development server:
-```bash
-npm run dev
+npm install @vercel/postgres
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Configure Environment Variables
+Create a `.env.local` file with your database credentials:
+
+```env
+# Vercel Postgres Credentials
+POSTGRES_URL=
+POSTGRES_PRISMA_URL=
+POSTGRES_URL_NON_POOLING=
+POSTGRES_USER=
+POSTGRES_HOST=
+POSTGRES_PASSWORD=
+POSTGRES_DATABASE=
+```
+
+Get Vercel Postgres credentials from:
+1. Vercel project dashboard
+2. Storage > Create New > Postgres Database
+3. `.env.local` tab in settings
+
+## Using Vercel Postgres
+
+### Basic Query
+```typescript
+import { sql } from '@vercel/postgres';
+
+async function getPosts() {
+  const { rows } = await sql`SELECT * from posts`;
+  return rows;
+}
+```
+
+### Using Client
+```typescript
+import { db } from '@vercel/postgres';
+
+async function getPosts() {
+  const client = await db.connect();
+  try {
+    const { rows } = await client.query('SELECT * from posts');
+    return rows;
+  } finally {
+    client.release();
+  }
+}
+```
+
+### Server Action Example
+Create `app/actions/pgPosts.ts`:
+```typescript
+'use server'
+
+import { sql } from '@vercel/postgres';
+import { revalidatePath } from 'next/cache';
+
+export async function createPost(title: string, content: string) {
+  try {
+    await sql`
+      INSERT INTO posts (title, content)
+      VALUES (${title}, ${content})
+    `;
+    revalidatePath('/');
+    return { message: 'Post created successfully' };
+  } catch (error) {
+    return { message: 'Database Error: Failed to create post' };
+  }
+}
+```
+
+## Available Scripts
+- `npm run dev`: Start development server
+
+## Project Structure
+- `/app`: Next.js app directory
+  - `/actions`: Server actions for database operations
+  - `/api`: API routes
+- `/lib`: Utility functions and database clients
+
+## Best Practices
+1. Use parameterized queries to prevent SQL injection
+2. Handle database errors appropriately
+3. Use `revalidatePath()` for cache management
+4. Keep credentials in `.env.local`
+5. Consider using Edge Runtime for better performance
+
+## Important Notes
+- Vercel Postgres provides automatic connection pooling
+- Use SQL template literals with @vercel/postgres for safety
+- Connection is automatically managed in Vercel's environment
+- Edge Runtime compatible - works with Edge Functions and Middleware
+- Local development requires proper environment variables setup
