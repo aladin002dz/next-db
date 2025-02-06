@@ -1,3 +1,9 @@
+# Next.js with Vercel Postgres
+
+This project demonstrates how to build a Next.js application with Vercel Postgres for database management.
+
+> Check out the [Prisma version](https://github.com/aladin002dz/next-db/tree/prisma) of this project.
+
 # Next.js Database Demo Project
 
 This is a demonstration project showcasing different approaches to database integration with Next.js. The project implements a simple blog-post system where users can create, read, and delete posts.
@@ -43,6 +49,12 @@ To explore the Drizzle implementation, check out the [drizzle branch](https://gi
 - Schema definitions using TypeScript
 - Type-safe query building
 - Simple and performant database operations
+
+### [Vercel Postgres Branch](https://github.com/aladin002dz/next-db/tree/vercel-pg)
+The Vercel Postgres branch demonstrates integration with Vercel Postgres. It features:
+- Vercel Postgres setup
+- Type-safe database operations
+- Efficient database operations
 
 ## Getting Started
 
