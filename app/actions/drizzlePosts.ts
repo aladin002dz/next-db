@@ -6,6 +6,17 @@ import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { desc } from "drizzle-orm";
 
+
+export async function getPosts() {
+  try {
+    const posts = await db.select().from(schema.posts).orderBy(desc(schema.posts.id));
+    return { posts };
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return { error: 'Failed to fetch posts', posts: [] };
+  }
+}
+
 export async function createPost(formData: FormData) {
   try {
     const title = formData.get('title') as string;
@@ -25,16 +36,6 @@ export async function createPost(formData: FormData) {
   } catch (error) {
     console.error('Error creating post:', error);
     return { error: 'Failed to create post' };
-  }
-}
-
-export async function getPosts() {
-  try {
-    const posts = await db.select().from(schema.posts).orderBy(desc(schema.posts.id));
-    return { posts };
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    return { error: 'Failed to fetch posts', posts: [] };
   }
 }
 
