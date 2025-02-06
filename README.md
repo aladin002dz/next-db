@@ -31,6 +31,19 @@ To explore the Prisma implementation, check out the [prisma branch](https://gith
 - Type-safe database queries
 - Detailed documentation on setup and usage
 
+### [Drizzle Branch](https://github.com/aladin002dz/next-db/tree/drizzle)
+The Drizzle branch demonstrates integration with Drizzle ORM. It features:
+- Drizzle ORM setup with SQLite
+- Type-safe schema definitions
+- Efficient database operations
+- Lightweight and flexible approach
+
+To explore the Drizzle implementation, check out the [drizzle branch](https://github.com/aladin002dz/next-db/tree/drizzle) which includes:
+- Complete Drizzle ORM configuration
+- Schema definitions using TypeScript
+- Type-safe query building
+- Simple and performant database operations
+
 ## Getting Started
 
 1. Clone the repository
