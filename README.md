@@ -1,23 +1,13 @@
-# Next.js with Vercel Postgres
-
-This project demonstrates how to build a Next.js application with Vercel Postgres for database management.
-
-> Check out the [Prisma version](https://github.com/aladin002dz/next-db/tree/prisma) of this project.
-
-# Next.js Database Demo Project
-
-This is a demonstration project showcasing different approaches to database integration with Next.js. The project implements a simple blog-post system where users can create, read, and delete posts.
-
-## Project Structure
-
-- Built with Next.js 14 App Router
-- Uses Server Actions for data mutations
-- Implements optimistic updates for better UX
-- Features a clean, modern UI
+# Next.js Database Integration with SQLite, Prisma, and Drizzle and Server Actions
 
 ## Available Branches
+1. [Main Branch - Only SQLite](https://github.com/aladin002dz/next-db/tree/main)
+2. [Prisma Branch - Prisma ORM & SQLite](https://github.com/aladin002dz/next-db/tree/prisma)
+3. [Drizzle Branch - Drizzle ORM & SQLite](https://github.com/aladin002dz/next-db/tree/drizzle)
+4. [Vercel Postgres Branch - Only Vercel Postgres](https://github.com/aladin002dz/next-db/tree/vercel-pg)
 
-### Main Branch (Current)
+
+### [Main Branch](https://github.com/aladin002dz/next-db/tree/main)
 The main branch implements a basic SQLite integration using `better-sqlite3`. It demonstrates:
 - Direct SQLite database operations
 - Server-side data handling
